@@ -1,0 +1,65 @@
+
+@startuml
+
+component [Clients - Web and APP] as CLIENTS
+component [Ops Clients - Web] as OPS_CLIENTS
+
+component [Nginx - Reverse Proxy] as NGINX
+
+package "API Server Cluster" as API_SERVER_CLUSTER {
+	component [API Server 1] as JACKFRUIT1 <<Jackfruit>>
+	component [API Server 2...N] as JACKFRUIT2 <<Jackfruit>>
+	component [Ops API Server] as MAIZE <<Maize>>
+}
+
+database "Redis Session Store" as SESSION_DB #999
+
+interface "Order Queue" as Q_ORDER <<ActiveMQ>>
+interface "Notify Queue" as Q_NOTIFY <<ActiveMQ>>
+
+component [Workflow Job Scheduler] as WF_SCHEDULER <<JAVA>>
+database "Transaction DB" as TXN_DB #eee
+
+component [Txn Workflow Server] as LOLLIPOP <<Lollipop>>
+component [DragonPay] as DP #grey
+component [RobinsonBank] as RB #grey
+
+LOLLIPOP --> DP
+LOLLIPOP --> RB
+
+JACKFRUIT1 .. SESSION_DB
+JACKFRUIT2 .. SESSION_DB
+MAIZE .. SESSION_DB
+
+CLIENTS --> NGINX
+OPS_CLIENTS --> NGINX
+
+NGINX --> JACKFRUIT1
+NGINX --> JACKFRUIT2
+
+API_SERVER_CLUSTER --> Q_ORDER #red
+WF_SCHEDULER <-- Q_ORDER #green
+
+LOLLIPOP . TXN_DB
+
+package "Workflow Server Cluster" as WF_SERVER_CLUSTER {
+	component [Loan Workflow Server 1] as VOLT1 <<Volt>>
+	component [Loan Workflow Server 2...N] as VOLT2 <<Volt>>
+}
+
+WF_SERVER_CLUSTER --> LOLLIPOP
+WF_SCHEDULER <-- Q_NOTIFY #green
+LOLLIPOP --> Q_NOTIFY #red
+
+API_SERVER_CLUSTER -> WF_SERVER_CLUSTER
+API_SERVER_CLUSTER -> LOLLIPOP
+
+database "Core DB" as DB #EEE
+
+VOLT1 . DB : update
+VOLT2 . DB : update
+
+WF_SCHEDULER --> VOLT1
+WF_SCHEDULER --> VOLT2
+
+@enduml
