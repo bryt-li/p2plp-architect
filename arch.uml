@@ -4,21 +4,21 @@
 component [Clients - Web and APP] as CLIENTS
 component [Ops Clients - Web] as OPS_CLIENTS
 
-component [Nginx - Reverse Proxy] as NGINX
+component [Nginx or AWS API Gateway\nReverse Proxy] as NGINX
 
-package "API Server Cluster" as API_SERVER_CLUSTER {
-	component [API Server 1] as JACKFRUIT1 <<Jackfruit>>
-	component [API Server 2...N] as JACKFRUIT2 <<Jackfruit>>
-	component [Ops API Server] as MAIZE <<Maize>>
+package "API Server Cluster or AWS Lambda" as API_SERVER_CLUSTER {
+	component [Client API Server 1...N] as JACKFRUIT <<Jackfruit>>
+	component [Ops API Server 1..N] as MAIZE <<Maize>>
 }
 
-database "Redis Session Store" as SESSION_DB #999
+package "Redis Cluster or AWS DynamoDB" as REDIS_CLUSTER {
+	database "Session Store" as SESSION_DB #999
+	database "DB Read Cache" as CACHE_DB #999
+}
 
-interface "Order Queue" as Q_ORDER <<ActiveMQ>>
-interface "Notify Queue" as Q_NOTIFY <<ActiveMQ>>
+component [Queue-based Workflow Job Scheduler] as WF_SCHEDULER <<JAVA>>
 
-component [Workflow Job Scheduler] as WF_SCHEDULER <<JAVA>>
-database "Transaction DB" as TXN_DB #eee
+JACKFRUIT --> WF_SCHEDULER
 
 component [Txn Workflow Server] as LOLLIPOP <<Lollipop>>
 component [DragonPay] as DP #grey
@@ -27,39 +27,36 @@ component [RobinsonBank] as RB #grey
 LOLLIPOP --> DP
 LOLLIPOP --> RB
 
-JACKFRUIT1 .. SESSION_DB
-JACKFRUIT2 .. SESSION_DB
+JACKFRUIT .. SESSION_DB
+JACKFRUIT .. CACHE_DB
 MAIZE .. SESSION_DB
+MAIZE .. CACHE_DB
 
 CLIENTS --> NGINX
 OPS_CLIENTS --> NGINX
 
-NGINX --> JACKFRUIT1
-NGINX --> JACKFRUIT2
+NGINX --> JACKFRUIT
+NGINX --> MAIZE
 
-API_SERVER_CLUSTER --> Q_ORDER #red
-WF_SCHEDULER <-- Q_ORDER #green
 
-LOLLIPOP . TXN_DB
+database "Transaction DB" as TXN_DB #eee
+LOLLIPOP .. TXN_DB
 
 package "Workflow Server Cluster" as WF_SERVER_CLUSTER {
-	component [Loan Workflow Server 1] as VOLT1 <<Volt>>
-	component [Loan Workflow Server 2...N] as VOLT2 <<Volt>>
+	component [Loan Workflow Server 1...N] as VOLT <<Volt>>
 }
 
-WF_SERVER_CLUSTER --> LOLLIPOP
-WF_SCHEDULER <-- Q_NOTIFY #green
-LOLLIPOP --> Q_NOTIFY #red
+VOLT <--> LOLLIPOP
 
-API_SERVER_CLUSTER -> WF_SERVER_CLUSTER
-API_SERVER_CLUSTER -> LOLLIPOP
+API_SERVER_CLUSTER --> VOLT
+JACKFRUIT --> LOLLIPOP
 
 database "Core DB" as DB #EEE
 
-VOLT1 . DB : update
-VOLT2 . DB : update
+VOLT . DB : update
 
-WF_SCHEDULER --> VOLT1
-WF_SCHEDULER --> VOLT2
+CACHE_DB . DB : sync
+
+WF_SCHEDULER --> VOLT
 
 @enduml
