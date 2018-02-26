@@ -1,14 +1,13 @@
-
 @startuml
 
 component [Clients - Web and APP] as CLIENTS
 component [Ops Clients - Web] as OPS_CLIENTS
 
-component [Nginx or AWS API Gateway\nReverse Proxy] as NGINX
+component [Nginx or AWS API Gateway\nReverse Proxy] as NGINX #cyan
 
 package "API Server Cluster or AWS Lambda" as API_SERVER_CLUSTER {
-	component [Client API Server 1...N] as JACKFRUIT <<Jackfruit>>
-	component [Ops API Server 1..N] as MAIZE <<Maize>>
+	component [Client API Server 1...N] as JACKFRUIT <<Jackfruit Cluster>>  #cyan
+	component [Ops API Server 1] as MAIZE <<Maize>> #cyan
 }
 
 package "Redis Cluster or AWS DynamoDB" as REDIS_CLUSTER {
@@ -16,7 +15,7 @@ package "Redis Cluster or AWS DynamoDB" as REDIS_CLUSTER {
 	database "DB Read Cache" as CACHE_DB #999
 }
 
-component [Queue-based Workflow Job Scheduler] as WF_SCHEDULER <<JAVA>>
+component [Queue-based Workflow Job Scheduler] as WF_SCHEDULER <<Diplopod>>
 
 JACKFRUIT --> WF_SCHEDULER
 
@@ -40,22 +39,21 @@ NGINX --> MAIZE
 
 
 database "Transaction DB" as TXN_DB #eee
-LOLLIPOP .. TXN_DB
+LOLLIPOP . TXN_DB
 
 package "Workflow Server Cluster" as WF_SERVER_CLUSTER {
-	component [Loan Workflow Server 1...N] as VOLT <<Volt>>
+	component [Loan Workflow Server 1...N] as VOLT <<Volt Cluster>>
 }
 
 VOLT <--> LOLLIPOP
 
-API_SERVER_CLUSTER --> VOLT
 JACKFRUIT --> LOLLIPOP
 
 database "Core DB" as DB #EEE
 
-VOLT . DB : update
+VOLT .> DB : write
 
-CACHE_DB . DB : sync
+CACHE_DB <. DB : read sync
 
 WF_SCHEDULER --> VOLT
 
