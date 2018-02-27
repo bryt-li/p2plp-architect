@@ -8,27 +8,27 @@
 
 ### Borrow Order Process
 
-![Borrow Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?name=BorrowOrderProcess.bpmn&src=https://dev.orienteexpress.com/BorrowOrderProcess.bpmn)
+![Borrow Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?name=BorrowOrderProcess.bpmn&src=http://dev.orienteexpress.com/BorrowOrderProcess.bpmn)
 
 ### Invest Order Process
 
-![Borrow Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=https://dev.orienteexpress.com/BorrowOrderProcess.bpmn)
+![Borrow Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=http://dev.orienteexpress.com/BorrowOrderProcess.bpmn)
 
 ### Lend Order Process
 
-![Lend Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=https://dev.orienteexpress.com/LendOrderProcess.bpmn)
+![Lend Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=http://dev.orienteexpress.com/LendOrderProcess.bpmn)
 
 ### Loan Process
 
-![Loan Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=https://dev.orienteexpress.com/LoanProcess.bpmn)
+![Loan Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=http://dev.orienteexpress.com/LoanProcess.bpmn)
 
 ### Repay Order Process
 
-![Repay Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=https://dev.orienteexpress.com/RepayOrderProcess.bpmn)
+![Repay Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=http://dev.orienteexpress.com/RepayOrderProcess.bpmn)
 
 ### Transaction(Txn) Order Process
 
-![Txn Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=https://dev.orienteexpress.com/TxnOrderProcess.bpmn)
+![Txn Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=http://dev.orienteexpress.com/TxnOrderProcess.bpmn)
 
 ## Core Database Schema
 
