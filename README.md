@@ -8,6 +8,9 @@
 
 ![Borrow Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?name=FooProcess.bpmn&src=https://bryt-li.github.io/bpmn/FooProcess.bpmn)
 
+## Core Database Schema
+
+![ER Diagram](/db.uml.png)
 
 ## Usage
 

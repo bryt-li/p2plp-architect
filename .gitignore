@@ -1,5 +1,8 @@
 doc/
 
+jackfruit_bean/src/
+jackfruit_bean/target/
+
 .DS_store
 # Logs
 logs
