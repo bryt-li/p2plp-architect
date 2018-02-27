@@ -6,7 +6,29 @@
 
 ## Work Flow Process
 
-![Borrow Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?name=FooProcess.bpmn&src=https://bryt-li.github.io/bpmn/FooProcess.bpmn)
+### Borrow Order Process
+
+![Borrow Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?name=BorrowOrderProcess.bpmn&src=https://dev.orienteexpress.com/BorrowOrderProcess.bpmn)
+
+### Invest Order Process
+
+![Borrow Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=https://dev.orienteexpress.com/BorrowOrderProcess.bpmn)
+
+### Lend Order Process
+
+![Lend Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=https://dev.orienteexpress.com/LendOrderProcess.bpmn)
+
+### Loan Process
+
+![Loan Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=https://dev.orienteexpress.com/LoanProcess.bpmn)
+
+### Repay Order Process
+
+![Repay Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=https://dev.orienteexpress.com/RepayOrderProcess.bpmn)
+
+### Transaction(Txn) Order Process
+
+![Txn Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=https://dev.orienteexpress.com/TxnOrderProcess.bpmn)
 
 ## Core Database Schema
 
