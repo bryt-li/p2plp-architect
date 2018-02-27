@@ -1,10 +1,12 @@
 {
   "name": "architect",
   "version": "0.1.0",
-  "description": "the architect design document",
+  "description": "P2P Loan Platform Architect Design Document",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "doxmate build",
+    "dev": "fswatch -0 -e doc/ . | xargs -0 -n 1 -I {} doxmate build"
   },
   "author": "Bryant Li",
   "license": "ISC",
