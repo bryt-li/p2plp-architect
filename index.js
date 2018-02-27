@@ -1,21 +1,25 @@
+var _ = require("lodash");
 var liveServer = require("live-server");
 var plantuml = require('node-plantuml');
-plantuml.useNailgun(); // Activate the usage of Nailgun 
+plantuml.useNailgun();
 
-const UML_SOURCE = 'arch.uml';
 const APP_PORT = 8181;
 
 function outputPlantumlImage(req, res, next) {
-  if(req.url=='/arch.png')
+  if(_.endsWith(req.url, '.uml.png'))
   {
+    const name = __dirname + req.url.substring(0,req.url.length-4);
     res.setHeader('Content-Type', 'image/png');
-    var gen = plantuml.generate(UML_SOURCE, {format: 'png'});
+    console.log(name);
+    var gen = plantuml.generate(name, {format: 'png'});
     gen.out.pipe(res);
-  }else if(req.url=='/arch.svg')
+  }else if(_.endsWith(req.url, '.uml.svg'))
   {
+    const name = __dirname + req.url.substring(0,req.url.length-4);
     res.setHeader('Content-Type', 'image/svg+xml');
-    var gen = plantuml.generate(UML_SOURCE, {format: 'svg'});
-    gen.out.pipe(res.socket);
+    console.log(name);
+    var gen = plantuml.generate(name, {format: 'svg'});
+    gen.out.pipe(res);
   }else{
     next();
   }
@@ -34,8 +38,6 @@ var params = {
     middleware: [outputPlantumlImage] // Takes an array of Connect-compatible middleware that are injected into the server middleware stack 
 };
 
-console.info(`http://0.0.0.0:${APP_PORT}/index.html`);
-console.info(`http://0.0.0.0:${APP_PORT}/arch.png`);
-console.info(`http://0.0.0.0:${APP_PORT}/arch.svg`);
+console.info(`http://0.0.0.0:${APP_PORT}`);
 
 liveServer.start(params);
