@@ -8,11 +8,11 @@
 
 ### Borrow Order Process
 
-![Borrow Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?name=BorrowOrderProcess.bpmn&src=http://dev.orienteexpress.com/BorrowOrderProcess.bpmn)
+![Borrow Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=http://dev.orienteexpress.com/BorrowOrderProcess.bpmn)
 
 ### Invest Order Process
 
-![Borrow Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=http://dev.orienteexpress.com/BorrowOrderProcess.bpmn)
+![Invest Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=http://dev.orienteexpress.com/InvestOrderProcess.bpmn)
 
 ### Lend Order Process
 
