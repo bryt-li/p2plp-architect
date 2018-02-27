@@ -15,7 +15,7 @@ package "Redis Cluster or AWS DynamoDB" as REDIS_CLUSTER {
 	database "DB Read Cache" as CACHE_DB #999
 }
 
-component [Queue-based Workflow Job Scheduler] as DIPLOPOD <<Diplopod>>
+component [Queue-based Workflow Task Scheduler] as DIPLOPOD <<Diplopod>>
 
 JACKFRUIT --> DIPLOPOD
 
