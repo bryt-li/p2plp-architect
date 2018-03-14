@@ -1,0 +1,432 @@
+@startuml
+package Configuration {
+  class Banks #lightgrey {
+    Bank Info
+    ==
+    #id
+    ..
+    name : varchar(32) not null -- name of bank
+    code : varchar(32) not null
+    nation : varchar(32) not null
+    accountLength : int -- account number length
+    validateExpression : varchar(64)
+    description : varchar(128) -- desc of bank
+  }
+
+  class LoanProducts #lightgrey {
+    Loan Products
+    ==
+    #id
+    ..
+    +name : varchar(64) -- name of loan product
+    amount : decimal(16,2) NOT NULL -- amount of money
+    days : int unsigned -- loan days
+    preloanFee : decimal(16,2) NOT NULL
+    installments : int unsigned NOT NULL -- by stages times
+    interestRate : decimal(10,8) NOT NULL -- interest rate
+    overdueInterestRate : decimal(10,8) NOT NULL -- overdue interest rate
+    minCredit : int unsigned not null -- min credit 
+  }
+}
+
+class Accounts #cyan {
+  Investor & Borrower Accounts
+  ==
+  #id
+  id_Person : bigint unsigned
+  id_Certificate : bigint unsigned
+  ..
+  openId : varchar(128) -- oauth openid
+  ..
+  +accountName : varchar(128)
+  +mobile : varchar(128) not null
+  credit : int unsigned not null default 0
+  ..
+  isDeleted : boolean not null default false
+  deletedAt : datetime -- account locked time
+  isLocked : boolean not null default false
+  lockedAt : datetime -- account locked time
+}
+
+package Wallet {
+  class Wallets #pink {
+      Wallet storing account balance money
+      ==
+      #id
+    id_Account : bigint unsigned not null
+      ..
+      balance : decimal(20,6) default 0
+    ..
+      status : varchar(32)
+  }
+
+  class WithdrawOrders {
+    Wallet Withdraw Order
+    ==
+    #id
+    id_Account : bigint unsigned not null
+    ..
+    status : varchar(32)
+    ..
+    amount : decimal(20,6) default 0
+    description : varchar(50)
+  }
+}
+
+WithdrawOrders --> Accounts : created by 1 account
+Wallets --> Accounts : belongs to 1 account
+
+package Profiles {
+
+  class Persons {
+    Person Profiles
+    ==
+    #id
+    ..
+    firstName : varchar(32)
+    middleName : varchar(32)
+    lastName : varchar(32)
+    nationality : varchar(32)
+    gender : varchar(10)
+    birthday : date
+    placeOfBirth : varchar(128)
+    maritalStatus : varchar(32)
+    mobile : varchar(16)
+    email : varchar(64)
+    education : varchar(64)
+    ..
+    residentialDistrictAddress : varchar(128)
+    residentialStreetAddress : varchar(128)
+    permanentDistrictAddress : varchar(128)
+    permanentStreetAddress : varchar(128)
+    ..
+    property : varchar(32)
+    yearlyFamilyIncome : varchar(32)
+    ..
+    hasUnrepaidLoan : boolean
+    unrepaidLoanAmount : decimal(16,2)
+    hasOverdue : boolean
+    hasFaceRecognition : boolean
+    hasFillCompleted : boolean
+    holdCertificateImgUrl : varchar(256)
+    socialStatus : varchar(32)
+    houseHoldBillAddressImgUrl : varchar(256)
+  }
+
+  class Cards {
+    Bank card information
+    ==
+    #id
+    id_Account : bigint unsigned
+    ..
+    isPrimary : boolean
+    isValid : boolean
+    isExpired : boolean
+    ..
+    bankAccountName : varchar(32)
+    bankAccount : varchar(32)
+    bankName : varchar(32)
+    bankCode : varchar(32)
+    bankNation : varchar(32)
+  }
+  
+  class Relatives {
+    Account Relatives
+    ==
+    #id
+    id_Account : bigint unsigned
+    ..
+    firstName : varchar(32)
+    middleName : varchar(32)
+    lastName : varchar(32)
+    gender : varchar(10)
+    mobile : varchar(16)
+    birthday : date
+    email : varchar(64)
+    districtAddress : varchar(128)
+    streetAddress : varchar(128)
+    company : varchar(64)
+    ..
+    type : varchar(32)
+    relationship : varchar(32)
+  }
+  
+  class Works {
+    Work Job information
+    ==
+    #id
+    id_Account : bigint unsigned
+    ..
+    employeeId : varchar(64)
+    workIdImgUrl : varchar(256)
+    ..
+    company : varchar(32) not null
+    occupation : varchar(64) not null
+    districtAddress : varchar(128) not null
+    streetAddress : varchar(128) not null
+    email : varchar(64)
+    phone : varchar(64)
+    entryDate : date not null
+    firstPayDay : int unsigned not null
+    secondPayDay : int unsigned
+    salary : decimal(16,2) not null
+    lastestPayCheckDate : date
+    secondLastestPayCheckDate : date
+    lastestPayslipImgUrl : varchar(256)
+  }
+  
+  class Certificates {
+    Certificates
+    ==
+    #id
+    ..
+      hasSocialSecurity : boolean
+      ssId : varchar(64)
+      ssName : varchar(64)
+      ssIssueDate : date
+      ssExpireDate : date
+      ssImgUrl : varchar(256)
+    ..
+      hasDriverLicense : boolean
+      dlId : varchar(64)
+      dlName : varchar(64)
+      dlIssueDate : date
+      dlExpireDate : date
+      dlImgUrl : varchar(256)
+    ..
+      hasPassport : boolean
+      ppId : varchar(64)
+      ppName : varchar(64)
+      ppIssueDate : date
+      ppExpireDate : date
+      ppImgUrl : varchar(256)
+    ..
+      hasTaxIdentification : boolean
+      tiId : varchar(64)
+      tiName : varchar(64)
+      tiIssueDate : date
+      tiExpireDate : date
+      tiImgUrl : varchar(256)
+    ..
+      hasUnified : boolean
+      uniId : varchar(64)
+      uniName : varchar(64)
+      uniIssueDate : date
+      uniExpireDate : date
+      uniImgUrl : varchar(256)
+  }
+}
+
+Accounts --> Persons : identified by 1 Person
+Accounts --> Certificates: has 1 certificate info
+
+Accounts <-- Relatives: belongs to 1 Account
+Accounts <-- Cards: belongs to 1 Account
+Accounts <-- Works: belongs to 1 Account
+
+class Loans #pink {
+  Loans information
+  ==
+  #id
+  orderNo : varchar(64) not null
+  id_LendOrder : bigint unsigned not null
+
+  .. status ..
+  instanceId : bigint unsigned
+  status : varchar(32)
+
+  .. copy from InvestOrders ..
+
+  .. copy from LendOrders ..
+
+  .. copy from BorrowOrders ..
+
+  ..
+  dueAt : date
+  unpaidInstallments : int unsigned NOT NULL
+
+  .. total ..
+  debt : decimal(20,6) default 0
+  fee : decimal(20,6) default 0
+  interest : decimal(20,6) default 0
+  overdueInterest : decimal(20,6) default 0
+  sum : decimal(16,2) default 0
+  
+  .. unpaid ..
+  unpaidDebt : decimal(20,6) default 0
+  unpaidFee : decimal(20,6) default 0
+  unpaidInterest : decimal(20,6) default 0
+  unpaidOverdueInterest : decimal(20,6) default 0
+  unpaidSum : decimal(16,2) default 0
+  
+  .. repaid ..
+  repaidDebt : decimal(20,6) default 0
+  repaidFee : decimal(20,6) default 0
+  repaidInterest : decimal(20,6) default 0
+  repaidOverdueInterest : decimal(20,6) default 0
+  repaidSum : decimal(16,2) default 0
+}
+
+class BorrowOrders {
+    Borrow order
+    ==
+    #id
+    id_Account : bigint unsigned not null
+  orderNo : varchar(64) not null
+    ..
+  status : varchar(32) not null
+  type : varchar(32) not null
+    ..
+  id_Loan : bigint unsigned
+  ..
+  amount : decimal(16,2) not null
+  ..
+  bankName : varchar(32)
+  bankAccount : varchar(32)
+
+  ..
+  debt : decimal(16,2) -- debt=principal+preloanFee
+  principal : decimal(16,2) 
+  preloanFee : decimal(16,2) 
+    .. copy from LoanProducts ..
+  name : varchar(64) -- name of loan product
+    purpose : varchar(128)
+  days : int unsigned -- loan days
+  dueAt : date
+  interestRate : decimal(10,8) -- interest rate
+  overdueInterestRate : decimal(10,8) -- overdue interest rate
+  installments : int unsigned default 1 -- by stages times
+  ..
+  channel : varchar(32)
+  description : varchar(256)
+}
+
+Loans -> LendOrders : created by 1 LendOrder
+
+BorrowOrders -> Accounts: belongs to 1 account
+BorrowOrders ..> LoanProducts: created from 1 loan product
+
+class Overdues #pink {
+  Borrow Order Overdue Tickets
+  ==
+  #id
+  orderNo : varchar(64) not null
+  id_Loan : bigint unsigned not null
+  id_Account : bigint unsigned not null
+  ..
+  principal : decimal(20,6) default 0
+  fee : decimal(20,6) default 0
+  overdueInterest : decimal(20,6) default 0
+  interest : decimal(20,6) default 0
+  dueAt : date
+  overduedAt : date
+}
+
+Overdues --> Loans : created by 1 overdued loan
+
+class Repayments #pink {
+  Loan Repayments
+  ==
+  #id
+  orderNo : varchar(64) not null
+  id_Loan : bigint unsigned not null
+  id_Account : bigint unsigned not null
+  ..
+  amount : decimal(16,2) default 0
+  dueAt : date not null
+  .. repaid ..
+  repaidDebt : decimal(20,6) default 0
+  repaidFee : decimal(20,6) default 0
+  repaidInterest : decimal(20,6) default 0
+  repaidOverdueInterest : decimal(20,6) default 0
+  repaidSum : decimal(16,2) default 0
+
+  .. unpaid ..
+  unpaidDebt : decimal(20,6) default 0
+  unpaidFee : decimal(20,6) default 0
+  unpaidInterest : decimal(20,6) default 0
+  unpaidOverdueInterest : decimal(20,6) default 0
+  unpaidSum : decimal(16,2) default 0
+
+  ..
+  channel : varchar(32)
+}
+
+
+class Investments #pink {
+  Loan Investments
+  ==
+  #id
+  id_InvestOrder : bigint unsigned not null
+  orderNo : varchar(64) not null
+  id_Loan : bigint unsigned not null
+  id_Account : bigint unsigned not null
+  ..
+  status : varchar(32)
+
+  ..
+  amount : decimal(16,2) -- amount=fee+principal
+  fee : decimal(16,2)
+  principal : decimal(16,2)
+  
+  ..
+  interest : decimal(16,2) default 0
+  dueAt : date not null
+}
+
+class InvestOrders {
+    Investment order
+    ==
+    #id
+  id_Account : bigint unsigned not null
+    id_LendOrder : bigint unsigned not null
+    id_BorrowOrder : bigint unsigned not null
+  ..
+  orderNo : varchar(64) not null
+  status : varchar(32) not null
+  amount : decimal(16,2) not null
+  ..
+  bank : varchar(32)
+  account : varchar(32)
+    ..
+  interest : decimal(16,2) default 0
+    dueAt : date not null
+}
+
+class LendOrders {
+  Lend Order
+  ==
+  #id
+  id_Account : bigint unsigned not null
+  id_BowrrowOrder : bigint unsigned not null
+  ..
+  status : varchar(32) not null
+}
+
+class RepayOrders {
+  Repay Order
+  ==
+  #id
+  id_Account : bigint unsigned not null
+  id_Loan : bigint unsigned not null
+  ..
+  status : varchar(32) not null
+}
+
+LendOrders --> Accounts : created by 1 Account
+
+RepayOrders --> Accounts : created by 1 Account
+
+RepayOrders -> Loans : belongs to 1 Loan
+
+Repayments --> RepayOrders : created by 1 RepayOrder
+
+LendOrders --> BorrowOrders : belongs to 1 BorrowOrder
+
+Investments --> InvestOrders : created by 1 InvestOrder
+
+InvestOrders --> LendOrders : invested by 1 LendOrder
+InvestOrders --> Accounts: created by 1 investor account
+InvestOrders --> BorrowOrders: invest to 1 BorrowOrder
+
+@enduml

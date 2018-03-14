@@ -4,14 +4,14 @@
   "description": "P2P Loan Platform Architect Design Document",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "docker -p 8000:8000 architect",
     "build": "doxmate build",
     "dev": "fswatch -0 -e doc/ . | xargs -0 -n 1 -I {} doxmate build",
     "mysql": "python plantuml2mysql.py db.uml jackfruit > jackfruit.MySQL.sql",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "entities": "python plantuml2entities.py && cd jackfruit_bean && mvn clean && mvn package && mvn install"
+    "entities": "python plantuml2entities.py && cd jackfruit_bean && mvn clean && mvn package && mvn install && cd .."
   },
-  "author": "oriente",
+  "author": "bryt",
   "license": "ISC",
   "dependencies": {
     "live-server": "^1.2.0",

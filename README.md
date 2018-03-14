@@ -1,49 +1,26 @@
-# P2P Loan Platform Architect Design Document
+# Components Diagram
+![component](component.uml)
 
-## Components Diagram
+# Work Flow Process
 
-![Components Diagram](/arch.uml.png)
+## Borrow Order Process
 
-## Work Flow Process
+![Borrow Order Process](workflow/BorrowOrderProcess.bpmn)
 
-### Borrow Order Process
+## Invest Order Process
+![Invest Order Process](workflow/InvestOrderProcess.bpmn)
 
-![Borrow Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=http://dev.orienteexpress.com/BorrowOrderProcess.bpmn)
+## Lend Order Process
+![Lend Order Process](workflow/LendOrderProcess.bpmn)
 
-### Invest Order Process
+## Loan Process
+![Loan Process](workflow/LoanProcess.bpmn)
 
-![Invest Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=http://dev.orienteexpress.com/InvestOrderProcess.bpmn)
+## Repay Order Process
+![Repay Order Process](workflow/RepayOrderProcess.bpmn)
 
-### Lend Order Process
+## Transaction(Txn) Order Process
+![Transaction Order Process](workflow/TxnOrderProcess.bpmn)
 
-![Lend Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=http://dev.orienteexpress.com/LendOrderProcess.bpmn)
-
-### Loan Process
-
-![Loan Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=http://dev.orienteexpress.com/LoanProcess.bpmn)
-
-### Repay Order Process
-
-![Repay Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=http://dev.orienteexpress.com/RepayOrderProcess.bpmn)
-
-### Transaction(Txn) Order Process
-
-![Txn Order Process](http://java.oriente.com.ph/activiti_image_server/proxy?src=http://dev.orienteexpress.com/TxnOrderProcess.bpmn)
-
-## Core Database Schema
-
-![ER Diagram](/db.uml.png)
-
-## Usage
-
-start local server to preview and edit plantuml file.
-
-```
-npm install
-
-npm build
-
-npm start
-
-homepage visit: http://localhost:8181/
-```
+# Core Order Db
+![er](er.uml)
