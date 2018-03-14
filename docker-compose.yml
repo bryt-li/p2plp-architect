@@ -1,9 +1,9 @@
-architect:
+architect-nginx-service:
   image: nginx
   volumes:
    - .:/usr/share/nginx/html:ro
   ports:
-   - "8081:80"
+   - "80:80"
   environment:
    - NGINX_HOST=dev.orienteexpress.com
-   - NGINX_PORT=8081
+   - NGINX_PORT=80
